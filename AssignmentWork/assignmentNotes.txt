@@ -1,0 +1,93 @@
+Microservice assignment
+
+Spting boot and kafka
+https://github.com/mebinjoe/spring-boot-kafka-splunk
+https://github.com/CloudKarafka/springboot-kafka-example
+https://www.confluent.io/blog/apache-kafka-spring-boot-application/
+
+Spring boot security
+https://mkyong.com/spring-boot/spring-rest-spring-security-example/
+
+spring boot baledung oauth
+https://www.baeldung.com/rest-api-spring-oauth2-angular
+https://www.toptal.com/spring/spring-boot-oauth2-jwt-rest-protection
+
+oauth Theory
+https://dzone.com/articles/securing-rest-services-with-oauth2-in-springboot-1
+https://www.javadevjournal.com/spring-boot/spring-boot-oauth2/
+https://www.devglan.com/spring-security/spring-boot-security-oauth2-example#/google_vignette
+https://www.youtube.com/watch?v=0pD7YeTAUkk
+
+Spring Boot
+https://github.com/RameshMF/springboot2-jpa-crud-rest
+
+Logging
+https://gist.github.com/int128/e47217bebdb4c402b2ffa7cc199307ba
+
+
+https://cgithub.com/bmrudul92/private/zip/master
+https://github.com/bmrudul92/private/tree/master/src
+
+Test
+https://thepracticaldeveloper.com/guide-spring-boot-controller-tests/
+
+https://medium.com/@shanaka.fernando2/spring-kafka-re-try-with-spring-retry-8e064483d56f
+
+#Logging Properties
+logging.level.root=WARN
+logging.level.org.springframework=ERROR
+logging.level.com.customer=INFO
+logging.pattern.file= %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%
+logging.file.path=logs
+
+
+DB
+customer_store
+atmakurihk
+atmakurihk
+
+index="history" source="consumer-log-event" consumed data|stats count
+
+
+angular assignment:
+https://github.com/pherapitso/angular-google-book-api-search
+google api url
+https://www.googleapis.com/books/v1/volumes?q=harry%20potter
+
+Flex box 
+https://medium.com/angular-in-depth/angular-flex-layout-flexbox-and-grid-layout-for-angular-component-6e7c24457b63
+
+Css Grid
+https://www.freecodecamp.org/news/learn-css-grid-in-5-minutes-f582e87b1228/
+
+header layout tutorial
+https://codinglatte.com/posts/angular/responsive-navbar-angular-flex-layout/
+https://www.angularjswiki.com/flexlayout/fxflex/
+
+Row layout for books
+https://medium.com/javascript-in-plain-english/create-a-responsive-card-grid-in-angular-using-flex-layout-3d1b58411e7a
+
+Material icons
+https://material.io/resources/icons/?icon=toc&style=outline
+
+Rating code reference
+https://www.techiediaries.com/angular-10-star-rating/
+
+https://medium.com/@vivek0208/create-form-using-angular-material-f2472dab1687
+
+Setup Jest with angular
+https://www.amadousall.com/how-to-set-up-angular-unit-testing-with-jest/
+https://izifortune.com/unit-testing-angular-applications-with-jest/
+https://medium.com/swlh/angular-unit-testing-jasmine-karma-step-by-step-e3376d110ab4
+https://github.com/akhil110/expensewatch
+https://www.youtube.com/watch?v=NsKBZuagLcg
+
+NGRX
+
+NGRX Facade implmentation
+https://itnext.io/abstracting-state-with-ngrx-facades-4f1f2491041c
+https://auth0.com/blog/ngrx-facades-pros-and-cons/
+https://thomasburlesonia.medium.com/ngrx-facades-better-state-management-82a04b9a1e39
+
+Testing NGRX
+https://medium.com/@bo.vandersteene/mock-your-ngrx-store-on-the-easy-way-68c66d4bea63

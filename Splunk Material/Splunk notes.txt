@@ -1,0 +1,133 @@
+Splunk Course
+
+Splunk documentation - https://docs.splunk.com/Documentation/Splunk
+https://www.splunk.com/en_us/training/free-courses/splunk-fundamentals-1.html
+Main functions of splunk
+
+1) index - collects data
+2)Search and investigate 
+3)Add knowledge
+4)Monitor and alert
+5)Report and analyze
+
+Components
+1)Indexer
+2)Search Head - allow users to search data
+3)Forwaders - consume data and forward data to indexers
+
+Three roles in splunk app
+1) Admin - powerful and decides incoming data to splunk
+2)Power - create and share knowledge objects to users and do real time search
+3)User - Will only see the objects shared with them
+
+Splunk search:
+
+->search and reporting app provides access to search and analyze data
+-> It helps in creating 
+	1)knowledge Objects
+	2)reports
+	3)Dashboards etc
+	
+Data Summary:
+1)Hosts
+2)Sources
+3)Source_types
+
+Using Feilds
+-> in feilds side bar feilds are broken t two categories
+ 1) Selected feilds (Most important feilds)
+ 2)Interested feilds (feilds have values in at least 20% of events)
+ 
+ ->Host source and sourcetype feilds are selected by default
+ -'a' denotes a string value '#' denotes a numeric value
+ 
+ 2602,1301
+ 
+ Best Practises:
+ ->Time to limit (less data we search the faster splunk will return)
+  ->Default feilds like index source sourcetype host
+  -> The more information we give to search the more efficeint search will be
+  ->Inclusion is better than exclusion
+  -> Apply fitering commands as early as possible in search
+ Using time:
+	->Splunk provides differnt time range to search forward
+	-> like alltime,week, month,relative  and realtime
+	->realtime search will help us to find out what is happening with data in realtime
+Using indexes:
+	->Splunk store data in indexes for searching
+	->often uses multiple indexes to segregate data
+	->Seaching based on indexes can make searches more efficient
+	->admin can regulate access to specific indexes for security reason
+	
+ SPL Fundamentals:
+ SPL is based on five components
+  1)Search terms
+  2)Commands (what we want to do with search results)
+  3)Funtions
+  4)Arguments
+  5)clauses
+  
+  Feilds - allows to include or exclude feilds from search command 
+			will be helpful to limit feilds to be displayed and make search faster
+Table - Retains data in tabular format
+Rename - used to rename feilds * if we rename feilds we can no longer search the events with old names
+Dedup - remove duplicate commands
+sort - sorting results in asc or desc
+
+Transforming commands:
+ - Order search results into data table for stastical purposes
+ 
+Top:finds most common values of the given feild in the result set
+  -> returns count and percent values
+  eg : |Top "feildname" "clauses"
+   Clauses used in top command
+    -limit =int
+	-countfeild =string
+	-percentfeild=string
+	-showcount=boolean
+	-showpercent=boolean
+	-useother = boolean
+	
+Rare:works similar to top command but shows least common values
+Stats: Used to produce stastics of search results
+  common stat functions are 
+   -count - returns total no of search results
+   -distinctcount - provides how many unique values are present in search results
+   -sum - will produce sum of numeric values in
+   -average - creates a avegage value for a given feild
+   -min - return minimum value for a given feild
+   -max - return maximum value for a given feild
+   -list -list all feild values for a given feild
+   -values -list all unique feild values for a given feild
+   
+   
+  count function:
+	eg:index=sales sourcetype=vendor_sales | stats count as "Total sales by vendors" by "product name"
+		->"as" clause is used to change name of column
+		->"by" class will return count based in each feild value
+		
+   Dinstinct count(dc):
+	eg: index=sales sourcetype=vendor_sales |stats distinct_count("productname")
+	->"as" clause is used to change name of column
+		->"by" class will return count based in each feild value
+   Sum:
+    eg:index=sales sourcetype=vendor_sales |stats sum("price")  as "gross_sales" by "product name"
+		-> will reuturn sum or price of all products sold
+
+  average(avg),min,max : only work on numeric values
+	eg:index=sales sourcetype=vendor_sales |stats avg("price") 
+	
+ List: 
+  eg: index=bcgassets source_type=asset_list |stats list(asset) as "company assets" by Employee
+  
+  Values:
+	eg : index=network sourceType=cisco_wsa_squid |stats values(hostname) by sc_username
+   
+ Reports and dashboards:
+  ->click save as button and enter details
+  naming convention: groupofreport_typeofobject_shortdescription
+ Dashboards: collection of reports
+ 
+Pivot and DataSets
+
+--Pivot is a data model created by admin or power roles for the users not having knowledge about search language

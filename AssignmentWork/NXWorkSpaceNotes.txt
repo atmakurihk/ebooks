@@ -1,0 +1,44 @@
+NX Notes
+
+Nrwl extension for angular
+created by ex googlers part of angular team
+Extesnion of angular CLI -- not replacement of angular cli
+
+With NX we can create work spaces  , applications and libraries
+
+Why NX
+
+-> to create multiple applications which share same state 
+-> Build enterprise level large applications
+
+->Monorepo
+   --- every library in our application sits in one repository
+ -> Architecture
+ -> scalability
+ 
+Set development Environment with NX
+
+Commands CLI nx work space
+
+-> To create new work space
+	npx create-nx-workspace@latest
+-> To serve application in nx work space
+	cd into required application 
+	  nx serve  is similar to ng serve but nx serve will enable computational cache for fast subsequent builds
+	  npx nx serve inside the required application
+	  
+	  ---> If we want to run nx commands directly we can install nx cli
+	  npm install -g nx
+-> Internally NX cli deligates commands to angular CLI when running commands or generating code The nx serve command produces the same result as ng serve, and nx build produces the same results as ng build. However, the Nx CLI supports advanced capabilities that aren't supported by the Angular CLI. For instance, Nx's computation cache only works when using the Nx CLI. In other words, using nx instead ng will result in the same output, but often will perform a lot
+
+Adding E2E tests for nx workspace
+
+->By default nx uses cypress to run e2e tests
+-> to run e2e tests using nx work space  --npx nx e2e appname-e2e --watch
+-> The above command will open cyprus ui which loads all the spec files and helps in running e2e integration tests
+
+->Libraries
+  -> libraries are publicly shared common code for nx application to generate a library run the following command
+	npx nx g @nrwl/angular:lib (library name) 
+	-> The above command will generate library under lib folder of apps root folder
+	

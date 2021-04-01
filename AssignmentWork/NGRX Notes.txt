@@ -1,0 +1,58 @@
+State:
+	Application state is entire memory of applications, consists of api calls user inputs, presentation ui state,application preferences
+Redux pattern:
+	
+	pattern used to simplify the state management in java script applications
+	primarily based on three principles
+	1)single source of truth :
+		Entire state of application is stored in single store
+		Store is responsible for storing data and providing data to components
+		Data flows from store to componenets instead of between components
+	2)Read only state:
+		State is immutable dosent mean that state is always constant and can not be changed
+		We can not change the state directly, to make changes in state we have to dispatch actions
+		
+	3)State is modified with pure functions:
+		actions dispatched will contain pure functions called reducers
+		reducers are responsible for modifying the state based on action received
+		reducer always return new state object with the modifications.
+		
+NgRx Fundamentals:
+	Store:
+		Key element in entire state management process.
+		Holds state and facilitates the interaction between components and state
+		Obtain reference to the store via angular dependecy injection
+		->Store reference can be used for two primarily actions
+			. dispatch actions to store via dispatch method, which will in turn
+			  trigger reducers and effects
+			.To retrive application state using selectors
+	Actions:
+		Action is an instruction that we dispactch to the store, some times with pay load
+		Based on action type store decides which operation to execute
+		Any action dispatched will reach to all reducers
+		
+	Reducers:
+		Responsible for modifying the state and returning a new state object with modificaitions
+		Takes two prameters current state and action, based on recevied actions will perform certain modifications to current state
+	Effects:
+		Allow you to perform side effects when an action is dispatched to store
+		->set dispatch:false if we did not send any action to store
+		
+	Selectors:
+		Pure functions used for obtaining sices of store states
+		
+	-> Store is an observable that you can subscribe to, when ever store receives an action , store will push its stae to subscribers
+	-> can use mapping functions to obtain slices of state and carry out any computation if required
+	-> can either manually subscribe to the observables or use it in angular template with async pipe to read values emitted
+	
+Facades:
+ -> Facade pattern is one of design priciples which encourages abstraction of the code internal implementations
+ ->NGRX Facade is also works on similar fashion which masks internal and more complex usages of components
+ ->This will enable developers to think components as view representational purpose only
+	Pros: 
+		-> Provide better development experience
+		->Easier to scale in large applications
+	Cons:
+		->Facades promotes indirection
+		->Facades can lead to reusing actions
+	

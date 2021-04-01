@@ -1,0 +1,261 @@
+PCF CLI Notes
+
+->Go to the project root folder
+->cf login or cf login -a "url"
+
+->email and password
+
+->will display targeted org and space
+->cf target (will give details of target)
+->cf target -0 [org] -s [space]
+->cf help target will provide all the details of command
+
+->cf push (push project to clound foundary)
+  . cf push [appname] --random-route 
+  *routes should be globally unique
+  *cloud foudary automatically detects the build pack and compile
+->cf push [appname] -p [package to be deployed]
+  * Build packs will create droplet and finally the drop let will be deployed
+
+-> To see logs cf logs [appname] in the root directory
+
+->cf apps will list applications in orgs and spaces
+
+->cf routes will show the list of routes avaiable for the applications
+ * We can have multiple routes for one applications
+ ->cf map-route [appname] [domain] [nameofroute]
+->cf spaces will give list of spaces present for org
+->cf orgs will give list of orgs for that account
+
+->cf stop [appname] will stop the application
+->cf restart [appname] will restart the application
+
+Application Manifest:
+ -> cf create-app-manifest [appname]  creates a manifest file
+ 
+ CF PUSH
+ ->Three steps happening
+   1 upload package (source code and manifest file)
+   2 staging- creation of droplet(droplet is self containing unit srcode + config + runtime)
+     > Determine the right build pack(s)
+	 >Run Build pack(s) to create droplet
+   3 Deployment -Deployment of droplet into a cell (like virtual server in cloud)
+  ->cf v3-droplets [appname] will list all the droplets created until now
+  ->Process of creating a droplet is called staging-
+ 
+ Deploying war file
+ 
+ -> Go into root folder
+ ->find war file in target
+ ->create a manifest file
+ -> Add name,target , routes in manifest file
+ ->cf push -- deploys application
+ ->cf stop will stop running applications
+ 
+ Setting up Database service
+ ->Video 16 in course is docker configuration of mysql
+ 
+ PWS UI:
+ ->Goto application in PCF web and select services on side panel
+ ->click add a service from marketplace
+ ->search service cleardb mysql DB select free plan
+ ->provide db name select app and space 
+ go to cmd
+  ->cf services  -- will show th list of services
+  we can create service in cmd
+   ->cf create-service
+   ->cf bind-service  -- will bind service to application
+   
+   Connect data base to spring app:
+   ->Open manifest file
+   ->correct names ,route and war file
+   ->declare services: and add service name
+   ->with out chaning properties spring autoreconfiguration will configure database service avaialble
+   ->cf env  [appname] give environment details of current application
+   
+   Spring auto reconfiguration:
+   ->java build pack to auto reconfiguration
+   ->adds cloud giles
+   ->exposes cloud foundary properties to app
+   ->rewrites bean definations to connect with services bound to App
+   ->Auto reconfiguration ingnore the customization
+   
+   ->To customization we need to add dependecies and do it ourselves
+     spring-cloud-foundary-connector
+	 spring-cloud-spring-service-connector
+	 
+Fullstack application deployment using PCF
+
+Deploy backend:
+
+ ->Create manifest file with name,routes,build pack,path
+ ->cd to application folder
+ ->cf apps  --list of apps
+ -> cf stop [appname] - to stop apps
+ ->cf push  ->pushes application using manifets file
+ 
+ Deploy Frontend:
+ ->create a production pacakge 
+ ->create manifest file (place it in root folder of frontend application)
+ ->change all the required attributes in manifest file
+ ->Add unique routes
+ ->use static file build pack
+ ->cf push  -> push static files to deployed
+ 
+ Creating combined manisfest file for front end backend
+ 
+ ->put manifestfile in root of both folders (two applications)
+ ->customize path to target folders
+ ->cf push from root folder
+ 
+ Explore UI of pivotal web services:
+ 
+ MicroServices:
+ ->Small autonomous service that work together
+ ->indpendently depoyable by automated deployment
+ ->Services easily scalable and cloud enabled
+ 
+ Challanges in microservice:
+ 
+ 1)Bounded Context:
+	indetify context of the services developed
+ 2)configuration Management:
+	Manitaining configuration seperately for all the mictroservice
+	
+ 3)Dynamic scaleup and scale down
+   bring microservice instance based in load
+ 4)Visibility:
+	log centralisation to indetify bugs and monitor them
+ 5)Fault tolerance of services
+
+Advantages of microservice:
+	->Enables to adapt new tech and process easily
+	->Dynamic scaling 
+	->Faster release cycles
+	 
+	 
+--> Deployment of currency conversion and currecny exchange services in PCF
+
+->Configuring envrionment Variables:
+ -> cd to currency conversion service
+    cf set-env [appname] [envVaraibleName] [envVariableValue]
+ -> restart after setting env variable
+   cf restart [appName]
+   
+ ->Scaling applications 
+ ->To increase the no of instances
+  cf scale -i [no of instances]
+	
+->Distributed tracing in PCF
+  -> go to pcf ui console check for metrics and click on logs to see logs of application
+  ->click on view in trace explores by selecting a log statement
+  ->To help PCF with this tracing we have to include springboot-starter-sleuth dependency
+  
+  ->Setting up service registry
+  Naming Server:
+  ->Goto market place and select servie registry
+  ->give name and select space and service to be binded
+  ->service can be binded in manifest file
+   services
+    -[servieName]
+  ->open service and click manage
+  ->after adding service in manifest cf push and deploy the application using cf push
+   -> To remove environment variables 
+      cf unset [appname] [variableName]
+	  cf env [appName]  -> will give all the environment variables
+	  
+AutoScaling services in PCF:
+  ->scale applications automatically based on load
+   -> Add cd app autoscaler cli
+   ->cf install plugin [path to downloaded plugin]
+   ->cf autoscaling-apps ->provides list of apps configured for autoscaling-apps
+   ->go to application ui console click on enable autoscaling
+   ->cf enable-autoscaling [appName]
+   ->click on manage autoscaling 
+   ->cf autoscaling [appname]  -> will list of autoscaling events on application
+   
+   Disable Autoscaling:
+   -> cf autoscaling-apps  -> will list all the application enabled autoscaling
+   ->cd disable-autoscaling [appname]  -> will disable autoscaling
+ RouteServices:
+ -> cf routes  -> will list all the routes configured
+ -> we can create user defined service called route service which can be used to intercept the  calls to microservice
+ -> To intercept request
+     create a rest controller and a method with empty request mapping 
+ -> to intercept request using route service 
+    cf create-user-provided-route-service [appname] -r https://[routeName]
+	
+Binding Routeservice with micro service:
+	 ->cf bind-route-service [domain] --hostname [host of route to be configured] 
+ Disabling RouteServices:
+ -> unbinding routes services
+	>cf unbind-route-service [domain] --hostname [host of route to be configured] 
+	
+PCF-Review
+->PCF removes un differenceiated heavy lifting like
+	. Provisioning VMs.DBs etc
+	. Container Management and orchestration
+	. Implementing load balancing and autoscaling
+	. Log Aggregation
+	. Resiliance
+	  ..Declared state vs actual state
+ ->Cloud foundary sits between applications and cloud provider
+ ->BOSH user cloud provider interface to talk to specific cloud provider
+    ->Take care of health, lifecycle,updates,recovery
+	->It does these using cloud provider interface
+
+Centralized configuration:
+->login to console search for config server in market place
+  select config server
+  in cmd also can be done go to config server local root folder
+  cf create-service p-config-server [serviceplan trail/standerd] [servername] -c [config server filename]
+	
+ ->Add service name in manifest file of applications
+ 
+Resiliance In PCF apps:
+->If app running in pcf crashed in build pcf resiliance mehcanism will do a health check and try bringing up the server
+  . This happens based on the health check settings present in app settings
+  . default health checking is done through port of application container
+  . we can cutomize health check to http (provided actuator dependency in application) provide end point to do a healthcheck
+->We can add health check to application through command line also
+   .cf ser-health-check [appname] [type por healthcheck http/port] --endpoint [endpointurl]
+   
+Direct Communication Between MicroServices:
+ ->Request flow in pcf 
+    user -> load balancer ->GoRouter -> cell (app is present in cell)
+	
+ -> If service called another microsevice instead of going throuh above route we can directly configure the communication using environment variable
+    cf set-env [appname] spring.cloud.services.registrationMethod direct(default value was route)
+	. To enable communication between containers we need to configure network policies
+	 cf network-policies [appname]   (will list down all the network policies for the application)
+	. To add network policy between apps
+	 cf add-network-policy [appname] --destination-app [destination appname]
+	. To Remove network policy 
+	  cf remove-network-policy [appname] --destination-app [destination appname] --protocol [protocol from policies list] --port [port from policies list]
+	. To reomve env variable provided for communication
+		cf unset-env [appname] spring.cloud.services.registrationMethod direct(default value was route)
+Deploying containers to PCF:
+	we can deploy docker containers directly using pivotal cloud foundry
+	->To push docker image to PCF
+	  cf push [appname] --docker-image [dockerimagePath] --random-route
+Blue Green Deployment:
+	-> Is an approach to avoid down time during production deployment
+	  . A new version is deployed seprately besides current prod version once the new version is up and running with out issues
+		we switch the traffic coming to current version to new one
+	->How to do
+	  . Configure a temp route for green deployment
+	  .do changes in manifest file
+	  .push the app with changes in manifest file (temp route added)
+	  .This push will not affect the already running application
+	  .Once testing on new version is complete change the route pointing to new version
+	   . cf map-route [green appname] domainname --hostname [existing prod route] 
+	  . after mapping route network traffic is distributed between both the app version
+	  .To make traffic passed to ony new version of app we can unmap the route to new application
+	   .cf unmap-route [blueapp] domainname -hostname [exiting prod route] 
+	  .Finally stop the old version of application
+	  
+	  
+-- Links in Courses
+https://github.com/in28minutes/learn
+PCF Courses
+https://github.com/in28minutes/pcf-crash-course-with-spring-boot
